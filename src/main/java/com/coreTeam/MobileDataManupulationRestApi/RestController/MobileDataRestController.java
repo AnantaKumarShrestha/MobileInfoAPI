@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/mobileAPI")
 public class MobileDataRestController {
 
 
@@ -41,8 +42,11 @@ public class MobileDataRestController {
         mobileService.addMobileData(mobileModel);
     }
 
+
+
+
     @PutMapping("/updateMobileData/{id}")
-    public String updateMobileData(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+    public String updateMobileDataUsingPut(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
 
         MobileModel mobileModel1=mobileService.findById(id);
         if(mobileModel1!=null) {
@@ -52,6 +56,43 @@ public class MobileDataRestController {
         }
         return "User Not Found";
     }
+
+    @PatchMapping("/patchMobileCompanyName/{id}")
+    public String updateMobileCompanyNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+
+        MobileModel mobileModel1=mobileService.findById(id);
+        if(mobileModel1!=null) {
+            mobileModel1.setCompanyName(mobileModel.getCompanyName());
+            mobileService.updateMobileData(mobileModel1);
+            return "Success";
+        }
+        return "User Not Found";
+    }
+
+    @PatchMapping("/patchMobileModelName/{id}")
+    public String updateMobileModelNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+
+        MobileModel mobileModel1=mobileService.findById(id);
+        if(mobileModel1!=null) {
+            mobileModel1.setModelName(mobileModel.getModelName());
+            mobileService.updateMobileData(mobileModel1);
+            return "Success";
+        }
+        return "User Not Found";
+    }
+
+    @PatchMapping("/patchMobilePrice/{id}")
+    public String updateMobilePriceUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+
+        MobileModel mobileModel1=mobileService.findById(id);
+        if(mobileModel1!=null) {
+            mobileModel1.setPrice(mobileModel.getPrice());
+            mobileService.updateMobileData(mobileModel1);
+            return "Success";
+        }
+        return "User Not Found";
+    }
+
 
 
 }
