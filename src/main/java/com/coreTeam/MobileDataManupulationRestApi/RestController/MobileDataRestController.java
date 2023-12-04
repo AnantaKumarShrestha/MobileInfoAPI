@@ -4,9 +4,11 @@ package com.coreTeam.MobileDataManupulationRestApi.RestController;
 import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 
@@ -68,6 +70,28 @@ public class MobileDataRestController {
     public MobileModel updateMobileImeiUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
         return mobileService.updateMobileIMEI(mobileModel,id);
     }
+
+//    @GetMapping("/ListOfMobileBetweenTwoDate/{startDate}/{endDate}")
+//    public List<MobileModel> ListOfMobileBetweenTwoDate(@PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,@PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
+//        return mobileService.listOfMobileBetweenTwoDates(startDate,endDate);
+//    }
+//
+//    @GetMapping("/ListOfMobileCreatedOnSameDate/{createdDate}")
+//    public List<MobileModel> listOfMobileCreatedOnSameDate(@PathVariable("createdDate") LocalDate cratedDate){
+//        return mobileService.listOfMobileCreatedOnSameDate(cratedDate);
+//    }
+
+    @GetMapping("/listOfMobileSortedByName")
+    public List<MobileModel> listOfMobileSortedByName(){
+        return mobileService.listOfMobileSortedByCompanyName();
+    }
+
+    @GetMapping("/listOfMobileSortedByNameIndesc")
+    public List<MobileModel> listOfMobileSortedByNameInDesc(){
+        return mobileService.listOfMobileSortedByCompanyNameInDesc();
+    }
+
+
 
 
 

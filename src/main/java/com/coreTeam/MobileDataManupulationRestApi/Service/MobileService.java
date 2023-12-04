@@ -2,6 +2,7 @@ package com.coreTeam.MobileDataManupulationRestApi.Service;
 
 import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MobileService {
@@ -24,5 +25,11 @@ public interface MobileService {
 
     MobileModel updateMobileIMEI(MobileModel mobileModel,int id);
 
+    List<MobileModel> listOfMobileBetweenTwoDates(LocalDate startDate,LocalDate endDate);
 
+    List<MobileModel> listOfMobileCreatedOnSameDate(LocalDate localDate);
+
+    List<MobileModel> listOfMobileSortedByCompanyName();
+
+    List<MobileModel> listOfMobileSortedByCompanyNameInDesc();
 }
