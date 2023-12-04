@@ -7,14 +7,22 @@ import java.util.List;
 public interface MobileService {
 
     List<MobileModel> getAllMobileList();
-    void addMobileData(MobileModel mobileModel);
+    MobileModel addMobileData(MobileModel mobileModel);
 
     MobileModel findById(int id);
     void deleteAllMobileData();
 
     void deleteMobileDataById(int id);
 
-    void updateMobileData(MobileModel mobileModel);
+    MobileModel updateMobileData(MobileModel mobileModel,int id);
+
+    MobileModel updateMobileCompanyName(MobileModel mobileModel,int id);
+
+    MobileModel updateMobileModelName(MobileModel mobileModel,int id);
+
+    MobileModel updateMobilePrice(MobileModel mobileModel,int id);
+
+    MobileModel updateMobileIMEI(MobileModel mobileModel,int id);
 
 
 }

@@ -4,8 +4,10 @@ package com.coreTeam.MobileDataManupulationRestApi.RestController;
 import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -38,59 +40,33 @@ public class MobileDataRestController {
     }
 
     @PostMapping("/addMobileData")
-    public void addMobileData(@RequestBody MobileModel mobileModel){
-        mobileService.addMobileData(mobileModel);
+    public MobileModel addMobileData(@RequestBody MobileModel mobileModel){
+        return mobileService.addMobileData(mobileModel);
     }
 
-
-
-
     @PutMapping("/updateMobileData/{id}")
-    public String updateMobileDataUsingPut(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-
-        MobileModel mobileModel1=mobileService.findById(id);
-        if(mobileModel1!=null) {
-            mobileModel.setId(id);
-            mobileService.updateMobileData(mobileModel);
-            return "Success";
-        }
-        return "User Not Found";
+    public MobileModel updateMobileDataUsingPut(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+        return mobileService.updateMobileData(mobileModel,id);
     }
 
     @PatchMapping("/patchMobileCompanyName/{id}")
-    public String updateMobileCompanyNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-
-        MobileModel mobileModel1=mobileService.findById(id);
-        if(mobileModel1!=null) {
-            mobileModel1.setCompanyName(mobileModel.getCompanyName());
-            mobileService.updateMobileData(mobileModel1);
-            return "Success";
-        }
-        return "User Not Found";
+    public MobileModel updateMobileCompanyNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+        return mobileService.updateMobileCompanyName(mobileModel,id);
     }
 
     @PatchMapping("/patchMobileModelName/{id}")
-    public String updateMobileModelNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-
-        MobileModel mobileModel1=mobileService.findById(id);
-        if(mobileModel1!=null) {
-            mobileModel1.setModelName(mobileModel.getModelName());
-            mobileService.updateMobileData(mobileModel1);
-            return "Success";
-        }
-        return "User Not Found";
+    public MobileModel updateMobileModelNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+        return mobileService.updateMobileModelName(mobileModel,id);
     }
 
     @PatchMapping("/patchMobilePrice/{id}")
-    public String updateMobilePriceUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+    public MobileModel updateMobilePriceUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+        return mobileService.updateMobilePrice(mobileModel,id);
+    }
 
-        MobileModel mobileModel1=mobileService.findById(id);
-        if(mobileModel1!=null) {
-            mobileModel1.setPrice(mobileModel.getPrice());
-            mobileService.updateMobileData(mobileModel1);
-            return "Success";
-        }
-        return "User Not Found";
+    @PatchMapping("/patchMobileImei/{id}")
+    public MobileModel updateMobileImeiUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
+        return mobileService.updateMobileIMEI(mobileModel,id);
     }
 
 

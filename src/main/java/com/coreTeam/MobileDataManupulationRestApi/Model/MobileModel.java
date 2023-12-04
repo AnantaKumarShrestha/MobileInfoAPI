@@ -16,6 +16,7 @@ public class MobileModel {
     private String companyName;
     private String modelName;
     private String price;
+    private String imei;
 
 
 
