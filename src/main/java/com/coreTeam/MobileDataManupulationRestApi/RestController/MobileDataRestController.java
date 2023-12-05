@@ -71,15 +71,15 @@ public class MobileDataRestController {
         return mobileService.updateMobileIMEI(mobileModel,id);
     }
 
-//    @GetMapping("/ListOfMobileBetweenTwoDate/{startDate}/{endDate}")
-//    public List<MobileModel> ListOfMobileBetweenTwoDate(@PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,@PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate){
-//        return mobileService.listOfMobileBetweenTwoDates(startDate,endDate);
-//    }
-//
-//    @GetMapping("/ListOfMobileCreatedOnSameDate/{createdDate}")
-//    public List<MobileModel> listOfMobileCreatedOnSameDate(@PathVariable("createdDate") LocalDate cratedDate){
-//        return mobileService.listOfMobileCreatedOnSameDate(cratedDate);
-//    }
+    @GetMapping("/ListOfMobileBetweenTwoDate/{startDate}/{endDate}")
+    public List<MobileModel> ListOfMobileBetweenTwoDate(@PathVariable("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,@PathVariable("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
+        return mobileService.listOfMobileBetweenTwoDates(startDate,endDate);
+    }
+
+    @GetMapping("/ListOfMobileCreatedOnSameDate/{createdDate}")
+    public List<MobileModel> listOfMobileCreatedOnSameDate(@PathVariable("createdDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate cratedDate){
+        return mobileService.listOfMobileCreatedOnSameDate(cratedDate);
+    }
 
     @GetMapping("/listOfMobileSortedByName")
     public List<MobileModel> listOfMobileSortedByName(){

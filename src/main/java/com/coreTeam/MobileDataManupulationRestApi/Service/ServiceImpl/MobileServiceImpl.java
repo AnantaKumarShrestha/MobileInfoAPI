@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
@@ -27,13 +28,16 @@ public class MobileServiceImpl implements MobileService {
         mobileModel.setImei(Base64.getEncoder().encodeToString(mobileModel.getImei().getBytes()));
     }
 
-    @Override
-    public List<MobileModel> getAllMobileList(){
-        List<MobileModel> mobileModelList=mobileDataRepo.findAll();
+    static List<MobileModel> decondingIMEIEntireList(List<MobileModel> mobileModelList){
         for(MobileModel mobileModel:mobileModelList){
             decodingIMEI(mobileModel);
         }
-        return  mobileModelList;
+        return mobileModelList;
+    }
+
+    @Override
+    public List<MobileModel> getAllMobileList(){
+        return  decondingIMEIEntireList(mobileDataRepo.findAll());
     }
 
     @Override
@@ -115,30 +119,22 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public List<MobileModel> listOfMobileBetweenTwoDates(LocalDate startDate, LocalDate endDate) {
-        return mobileDataRepo.findByDateCreatedBetween(startDate,endDate);
+        return decondingIMEIEntireList(mobileDataRepo.findByDateCreatedBetween(startDate,endDate));
     }
 
     @Override
     public List<MobileModel> listOfMobileCreatedOnSameDate(LocalDate localDate) {
-        return mobileDataRepo.findByDateCreated(localDate);
+        return decondingIMEIEntireList(mobileDataRepo.findByDateCreated(localDate));
     }
 
     @Override
     public List<MobileModel> listOfMobileSortedByCompanyName() {
-        List<MobileModel> mobileModelList=mobileDataRepo.findAll(Sort.by(Sort.Direction.ASC, "companyName"));
-        for(MobileModel mobileModel:mobileModelList){
-            decodingIMEI(mobileModel);
-        }
-        return  mobileModelList;
+        return  decondingIMEIEntireList(mobileDataRepo.findAll(Sort.by(Sort.Direction.ASC, "companyName")));
     }
 
     @Override
     public List<MobileModel> listOfMobileSortedByCompanyNameInDesc() {
-        List<MobileModel> mobileModelList=mobileDataRepo.findAll(Sort.by(Sort.Direction.DESC, "companyName"));
-        for(MobileModel mobileModel:mobileModelList){
-            decodingIMEI(mobileModel);
-        }
-        return  mobileModelList;
+        return  decondingIMEIEntireList(mobileDataRepo.findAll(Sort.by(Sort.Direction.DESC, "companyName")));
     }
 
 
