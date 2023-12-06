@@ -5,16 +5,14 @@ import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.List;
 
 @RestController
 @RequestMapping("/mobileAPI")
-public class MobileDataRestController {
+public class MobileDataRestController{
 
 
     @Autowired
@@ -26,9 +24,15 @@ public class MobileDataRestController {
 
     }
 
+//    @GetMapping("/getMobileById/{id}")
+//    public MobileModel getMobileById(@PathVariable("id") int id){
+//     return mobileService.findById(id);
+//    }
+
+
     @GetMapping("/getMobileById/{id}")
-    public MobileModel getMobileById(@PathVariable("id") int id){
-     return mobileService.findById(id);
+    public MobileModel getUser(@PathVariable int id) {
+        return mobileService.findById(id);
     }
 
     @DeleteMapping("/deleteAllMobileData")
@@ -91,7 +95,52 @@ public class MobileDataRestController {
         return mobileService.listOfMobileSortedByCompanyNameInDesc();
     }
 
+    // Using Request Param
 
+    @GetMapping("/getMobileById")
+    public MobileModel getMobileByIdParam(@RequestParam("id") int id){
+        return mobileService.findById(id);
+    }
+
+    @PutMapping("/updateMobileData")
+    public MobileModel updateMobileDataUsingPutParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
+        return mobileService.updateMobileData(mobileModel,id);
+    }
+
+    @PatchMapping("/patchMobileCompanyName")
+    public MobileModel updateMobileCompanyNameUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
+        return mobileService.updateMobileCompanyName(mobileModel,id);
+    }
+
+    @PatchMapping("/patchMobileModelName")
+    public MobileModel updateMobileModelNameUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
+        return mobileService.updateMobileModelName(mobileModel,id);
+    }
+
+    @PatchMapping("/patchMobilePrice")
+    public MobileModel updateMobilePriceUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
+        return mobileService.updateMobilePrice(mobileModel,id);
+    }
+
+    @PatchMapping("/patchMobileImei")
+    public MobileModel updateMobileImeiUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
+        return mobileService.updateMobileIMEI(mobileModel,id);
+    }
+
+    @GetMapping("/ListOfMobileBetweenTwoDate")
+    public List<MobileModel> ListOfMobileBetweenTwoDateParam(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
+        return mobileService.listOfMobileBetweenTwoDates(startDate,endDate);
+    }
+
+    @GetMapping("/ListOfMobileCreatedOnSameDate")
+    public List<MobileModel> listOfMobileCreatedOnSameDateParam(@RequestParam("createdDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate cratedDate){
+        return mobileService.listOfMobileCreatedOnSameDate(cratedDate);
+    }
+
+    @DeleteMapping("/deleteMobileData")
+    public void deleteMobileDataByIdParam(@RequestParam("id") int id){
+        mobileService.deleteMobileDataById(id);
+    }
 
 
 

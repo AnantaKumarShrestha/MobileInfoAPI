@@ -1,9 +1,8 @@
 package com.coreTeam.MobileDataManupulationRestApi.Model;
 
+import com.coreTeam.MobileDataManupulationRestApi.Convertor.IMEIConvertor;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Generated;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,6 +21,8 @@ public class MobileModel {
     private String companyName;
     private String modelName;
     private String price;
+
+    @Convert(converter = IMEIConvertor.class)
     private String imei;
 
     @CreationTimestamp
