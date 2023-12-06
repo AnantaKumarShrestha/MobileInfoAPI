@@ -3,6 +3,7 @@ package com.coreTeam.MobileDataManupulationRestApi.RestController;
 
 import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
+import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -19,122 +20,23 @@ public class MobileDataRestController{
     private MobileService mobileService;
 
     @GetMapping("/getAllMobileData")
-    public List<MobileModel> getAllMobileData(){
+    public List<MobileDTO> getAllMobileData(){
       return mobileService.getAllMobileList();
 
-    }
-
-//    @GetMapping("/getMobileById/{id}")
-//    public MobileModel getMobileById(@PathVariable("id") int id){
-//     return mobileService.findById(id);
-//    }
-
-
-    @GetMapping("/getMobileById/{id}")
-    public MobileModel getUser(@PathVariable int id) {
-        return mobileService.findById(id);
-    }
-
-    @DeleteMapping("/deleteAllMobileData")
-    public void deleteAllMobileData(){
-        mobileService.deleteAllMobileData();
-    }
-
-    @DeleteMapping("/deleteMobileData/{id}")
-    public void deleteMobileDataById(@PathVariable("id") int id){
-        mobileService.deleteMobileDataById(id);
-    }
-
-    @PostMapping("/addMobileData")
-    public MobileModel addMobileData(@RequestBody MobileModel mobileModel){
-        return mobileService.addMobileData(mobileModel);
-    }
-
-    @PutMapping("/updateMobileData/{id}")
-    public MobileModel updateMobileDataUsingPut(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-        return mobileService.updateMobileData(mobileModel,id);
-    }
-
-    @PatchMapping("/patchMobileCompanyName/{id}")
-    public MobileModel updateMobileCompanyNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-        return mobileService.updateMobileCompanyName(mobileModel,id);
-    }
-
-    @PatchMapping("/patchMobileModelName/{id}")
-    public MobileModel updateMobileModelNameUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-        return mobileService.updateMobileModelName(mobileModel,id);
-    }
-
-    @PatchMapping("/patchMobilePrice/{id}")
-    public MobileModel updateMobilePriceUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-        return mobileService.updateMobilePrice(mobileModel,id);
-    }
-
-    @PatchMapping("/patchMobileImei/{id}")
-    public MobileModel updateMobileImeiUsingPatch(@RequestBody MobileModel mobileModel,@PathVariable("id") int id){
-        return mobileService.updateMobileIMEI(mobileModel,id);
-    }
-
-    @GetMapping("/ListOfMobileBetweenTwoDate/{startDate}/{endDate}")
-    public List<MobileModel> ListOfMobileBetweenTwoDate(@PathVariable("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,@PathVariable("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
-        return mobileService.listOfMobileBetweenTwoDates(startDate,endDate);
-    }
-
-    @GetMapping("/ListOfMobileCreatedOnSameDate/{createdDate}")
-    public List<MobileModel> listOfMobileCreatedOnSameDate(@PathVariable("createdDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate cratedDate){
-        return mobileService.listOfMobileCreatedOnSameDate(cratedDate);
-    }
-
-    @GetMapping("/listOfMobileSortedByName")
-    public List<MobileModel> listOfMobileSortedByName(){
-        return mobileService.listOfMobileSortedByCompanyName();
-    }
-
-    @GetMapping("/listOfMobileSortedByNameIndesc")
-    public List<MobileModel> listOfMobileSortedByNameInDesc(){
-        return mobileService.listOfMobileSortedByCompanyNameInDesc();
     }
 
     // Using Request Param
 
     @GetMapping("/getMobileById")
-    public MobileModel getMobileByIdParam(@RequestParam("id") int id){
+    public MobileDTO getMobileByIdParam(@RequestParam("id") int id){
         return mobileService.findById(id);
     }
 
-    @PutMapping("/updateMobileData")
-    public MobileModel updateMobileDataUsingPutParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
-        return mobileService.updateMobileData(mobileModel,id);
-    }
 
-    @PatchMapping("/patchMobileCompanyName")
-    public MobileModel updateMobileCompanyNameUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
-        return mobileService.updateMobileCompanyName(mobileModel,id);
-    }
 
-    @PatchMapping("/patchMobileModelName")
-    public MobileModel updateMobileModelNameUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
-        return mobileService.updateMobileModelName(mobileModel,id);
-    }
-
-    @PatchMapping("/patchMobilePrice")
-    public MobileModel updateMobilePriceUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
-        return mobileService.updateMobilePrice(mobileModel,id);
-    }
-
-    @PatchMapping("/patchMobileImei")
-    public MobileModel updateMobileImeiUsingPatchParam(@RequestBody MobileModel mobileModel,@RequestParam("id") int id){
-        return mobileService.updateMobileIMEI(mobileModel,id);
-    }
-
-    @GetMapping("/ListOfMobileBetweenTwoDate")
-    public List<MobileModel> ListOfMobileBetweenTwoDateParam(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
-        return mobileService.listOfMobileBetweenTwoDates(startDate,endDate);
-    }
-
-    @GetMapping("/ListOfMobileCreatedOnSameDate")
-    public List<MobileModel> listOfMobileCreatedOnSameDateParam(@RequestParam("createdDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate cratedDate){
-        return mobileService.listOfMobileCreatedOnSameDate(cratedDate);
+    @DeleteMapping("/deleteAllMobileData")
+    public void deleteAllMobileData(){
+        mobileService.deleteAllMobileData();
     }
 
     @DeleteMapping("/deleteMobileData")
@@ -142,6 +44,55 @@ public class MobileDataRestController{
         mobileService.deleteMobileDataById(id);
     }
 
+    @PostMapping("/addMobileData")
+    public MobileDTO addMobileData(@RequestBody MobileDTO mobileDTO){
+        return mobileService.addMobileData(mobileDTO);
+    }
+
+    @PutMapping("/updateMobileData")
+    public MobileDTO updateMobileDataUsingPutParam(@RequestBody MobileDTO mobileDTO,@RequestParam("id") int id){
+        return mobileService.updateMobileData(mobileDTO,id);
+    }
+
+    @PatchMapping("/patchMobileCompanyName")
+    public MobileDTO updateMobileCompanyNameUsingPatchParam(@RequestBody MobileDTO mobileDTO,@RequestParam("id") int id){
+        return mobileService.updateMobileCompanyName(mobileDTO,id);
+    }
+
+    @PatchMapping("/patchMobileModelName")
+    public MobileDTO updateMobileModelNameUsingPatchParam(@RequestBody MobileDTO mobileDTO,@RequestParam("id") int id){
+        return mobileService.updateMobileModelName(mobileDTO,id);
+    }
+
+    @PatchMapping("/patchMobilePrice")
+    public MobileDTO updateMobilePriceUsingPatchParam(@RequestBody MobileDTO mobileDTO,@RequestParam("id") int id){
+        return mobileService.updateMobilePrice(mobileDTO,id);
+    }
+
+    @PatchMapping("/patchMobileImei")
+    public MobileDTO updateMobileImeiUsingPatchParam(@RequestBody MobileDTO mobileDTO,@RequestParam("id") int id){
+        return mobileService.updateMobileIMEI(mobileDTO,id);
+    }
+
+    @GetMapping("/ListOfMobileBetweenTwoDate")
+    public List<MobileDTO> ListOfMobileBetweenTwoDateParam(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
+        return mobileService.listOfMobileBetweenTwoDates(startDate,endDate);
+    }
+
+    @GetMapping("/ListOfMobileCreatedOnSameDate")
+    public List<MobileDTO> listOfMobileCreatedOnSameDateParam(@RequestParam("createdDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate cratedDate){
+        return mobileService.listOfMobileCreatedOnSameDate(cratedDate);
+    }
+
+    @GetMapping("/listOfMobileSortedByName")
+    public List<MobileDTO> listOfMobileSortedByName(){
+        return mobileService.listOfMobileSortedByCompanyName();
+    }
+
+    @GetMapping("/listOfMobileSortedByNameIndesc")
+    public List<MobileDTO> listOfMobileSortedByNameInDesc(){
+        return mobileService.listOfMobileSortedByCompanyNameInDesc();
+    }
 
 
 }
