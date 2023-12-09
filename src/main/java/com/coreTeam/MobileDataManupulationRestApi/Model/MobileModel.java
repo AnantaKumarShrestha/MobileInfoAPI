@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Generated;
+import lombok.Value;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -16,8 +18,8 @@ public class MobileModel {
 
 
     @Id
-    @Generated
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private String companyName;
     private String modelName;
     private String price;

@@ -3,11 +3,12 @@ package com.coreTeam.MobileDataManupulationRestApi.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 public class MobileDTO {
 
-    private int id;
+    private UUID id;
     private String companyName;
     private String modelName;
     private String price;

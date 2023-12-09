@@ -1,8 +1,10 @@
 package com.coreTeam.MobileDataManupulationRestApi.Exception;
 
+import java.util.UUID;
+
 public class MobileNotFoundException extends RuntimeException{
-    public MobileNotFoundException(int id){
-        super(String.format("Mobile Not Found, Mobile ID: %d",id));
+    public MobileNotFoundException(UUID id){
+        super(String.format("Mobile Not Found, Mobile ID:"));
     }
 
 }

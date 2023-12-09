@@ -5,6 +5,7 @@ import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public interface MobileService {
 
@@ -48,20 +49,20 @@ public interface MobileService {
     List<MobileDTO> getAllMobileList();
     MobileDTO addMobileData(MobileDTO mobileDTO);
 
-    MobileDTO findById(int id);
+    MobileDTO findById(UUID id);
     void deleteAllMobileData();
 
-    void deleteMobileDataById(int id);
+    void deleteMobileDataById(UUID id);
 
-    MobileDTO updateMobileData(MobileDTO mobileDTO,int id);
+    MobileDTO updateMobileData(MobileDTO mobileDTO, UUID id);
 
-    MobileDTO updateMobileCompanyName(MobileDTO mobileDTO,int id);
+    MobileDTO updateMobileCompanyName(MobileDTO mobileDTO,UUID id);
 
-    MobileDTO updateMobileModelName(MobileDTO mobileDTO,int id);
+    MobileDTO updateMobileModelName(MobileDTO mobileDTO,UUID id);
 
-    MobileDTO updateMobilePrice(MobileDTO mobileDTO,int id);
+    MobileDTO updateMobilePrice(MobileDTO mobileDTO,UUID id);
 
-    MobileDTO updateMobileIMEI(MobileDTO mobileDTO,int id);
+    MobileDTO updateMobileIMEI(MobileDTO mobileDTO,UUID id);
 
     List<MobileDTO> listOfMobileBetweenTwoDates(LocalDate startDate,LocalDate endDate);
 
