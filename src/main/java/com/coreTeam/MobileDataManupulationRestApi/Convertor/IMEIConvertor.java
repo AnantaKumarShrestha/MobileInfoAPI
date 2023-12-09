@@ -7,67 +7,51 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 
-@Configuration
-public class IMEIConvertor implements AttributeConverter<Object,String> {
+@Component
+public class IMEIConvertor implements AttributeConverter<String,String> {
 
 
-    @Value("${aes.encryption.key}")
-    private String encryptionKey="asas";
+    private static final String AES = "AES";
+    private static final String SECRET = "secret-key-12345";
 
-    private final String encryptionCipher = "AES";
+    private final Key key;
+    private final Cipher cipher;
 
-    private Key key;
-    private Cipher cipher;
-
-    private Key getKey() {
-        if (key == null)
-            key = new SecretKeySpec(encryptionKey.getBytes(), encryptionCipher);
-        return key;
+    public IMEIConvertor() throws Exception {
+        key = new SecretKeySpec(SECRET.getBytes(), AES);
+        cipher = Cipher.getInstance(AES);
     }
 
-    private Cipher getCipher() throws GeneralSecurityException {
-        if (cipher == null)
-            cipher = Cipher.getInstance(encryptionCipher);
-        return cipher;
-    }
-
-    private void initCipher(int encryptMode) throws GeneralSecurityException {
-        getCipher().init(encryptMode, getKey());
-    }
-
-    @SneakyThrows
     @Override
-    public String convertToDatabaseColumn(Object attribute) {
-//        if (attribute == null)
-//            return null;
-//        initCipher(Cipher.ENCRYPT_MODE);
-//        byte[] bytes = SerializationUtils.serialize(attribute);
-//        return Base64.getEncoder().encodeToString(getCipher().doFinal(bytes));
-        return null;
+    public String convertToDatabaseColumn(String attribute) {
+        try {
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            return Base64.getEncoder().encodeToString(cipher.doFinal(attribute.getBytes()));
+        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
-    @SneakyThrows
     @Override
-    public Object convertToEntityAttribute(String dbData) {
-//        if (dbData == null)
-//            return null;
-//        initCipher(Cipher.DECRYPT_MODE);
-//        byte[] bytes = getCipher().doFinal(Base64.getDecoder().decode(dbData));
-//        return SerializationUtils.deserialize(bytes);
-
-        return null;
+    public String convertToEntityAttribute(String dbData) {
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            return new String(cipher.doFinal(Base64.getDecoder().decode(dbData)));
+        } catch (InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }
