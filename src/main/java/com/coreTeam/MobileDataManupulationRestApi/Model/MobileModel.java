@@ -4,10 +4,9 @@ import com.coreTeam.MobileDataManupulationRestApi.Convertor.IMEIConvertor;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Generated;
-import lombok.Value;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -23,6 +22,7 @@ public class MobileModel {
     private String companyName;
     private String modelName;
     private String price;
+    private String status;
 
     @Convert(converter = IMEIConvertor.class)
     private String imei;

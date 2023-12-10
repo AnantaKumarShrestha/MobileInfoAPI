@@ -1,5 +1,7 @@
 package com.coreTeam.MobileDataManupulationRestApi.Service.ServiceImpl;
 
+import com.coreTeam.MobileDataManupulationRestApi.Exception.MobileNotFoundException;
+import com.coreTeam.MobileDataManupulationRestApi.Exception.OwnerNotFoundException;
 import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.Model.OwnerModel;
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
@@ -31,7 +33,6 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public OwnerDTO addOwner(OwnerDTO ownerDTO) {
         OwnerModel ownerModel=ownerDtoIntoOwnerModel(ownerDTO);
-
         return ownerModelIntoOwnerDto(ownerRepo.save(ownerModel));
     }
 
@@ -42,7 +43,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public OwnerDTO getOwnerByID(UUID id) {
-        return ownerModelIntoOwnerDto(ownerRepo.findById(id).get());
+        return ownerModelIntoOwnerDto(ownerRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
     }
 
     @Override
@@ -55,6 +56,8 @@ public class OwnerServiceImpl implements OwnerService {
     public OwnerDTO assigningMobileToOwner(UUID ownerId, UUID mobileId) {
         OwnerDTO owner=getOwnerByID(ownerId);
         MobileDTO mobile=mobileService.findById(mobileId);
+        mobile.setStatus("Active");
+        mobileService.updateMobileData(mobile);
         if (owner.getMobileList() == null) {
             owner.setMobileList(new ArrayList<>());
         }

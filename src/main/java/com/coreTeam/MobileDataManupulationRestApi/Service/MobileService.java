@@ -49,6 +49,8 @@ public interface MobileService {
     List<MobileDTO> getAllMobileList();
     MobileDTO addMobileData(MobileDTO mobileDTO);
 
+    MobileDTO updateMobileData(MobileDTO mobileDTO);
+
     MobileDTO findById(UUID id);
     void deleteAllMobileData();
 
@@ -71,6 +73,10 @@ public interface MobileService {
     List<MobileDTO> listOfMobileSortedByCompanyName();
 
     List<MobileDTO> listOfMobileSortedByCompanyNameInDesc();
+
+    MobileDTO deactivateMobile(UUID id);
+
+    MobileDTO activateMobile(UUID id);
 
     MobileModel mobileDtoIntoMobileModel(MobileDTO mobileDTO);
 

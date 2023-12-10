@@ -138,6 +138,14 @@ public class MobileServiceImpl implements MobileService {
     @Override
     public MobileDTO addMobileData(MobileDTO mobileDTO) {
         MobileModel mobileModel=mobileDtoIntoMobileModel(mobileDTO);
+        mobileModel.setStatus("InActive");
+        MobileModel savedMobile=mobileDataRepo.save(mobileModel);
+        return mobileModelIntoMobileDto(savedMobile);
+    }
+
+    @Override
+    public MobileDTO updateMobileData(MobileDTO mobileDTO) {
+        MobileModel mobileModel=mobileDtoIntoMobileModel(mobileDTO);
         MobileModel savedMobile=mobileDataRepo.save(mobileModel);
         return mobileModelIntoMobileDto(savedMobile);
     }
@@ -161,7 +169,7 @@ public class MobileServiceImpl implements MobileService {
     public MobileDTO updateMobileData(MobileDTO mobileDTO, UUID id){
         if(findById(id)!=null){
             mobileDTO.setId(id);
-            return addMobileData(mobileDTO);
+            return updateMobileData(mobileDTO);
         }else {
             return null;
         }
@@ -172,7 +180,7 @@ public class MobileServiceImpl implements MobileService {
         MobileDTO mobileInDB=findById(id);
         if(mobileInDB!=null){
             mobileInDB.setCompanyName(mobileDTO.getCompanyName());
-            return addMobileData(mobileInDB);
+            return updateMobileData(mobileInDB);
         }else {
             return null;
         }
@@ -183,7 +191,7 @@ public class MobileServiceImpl implements MobileService {
         MobileDTO mobileInDB=findById(id);
         if(mobileInDB!=null){
             mobileInDB.setModelName(mobileDTO.getModelName());
-            return addMobileData(mobileInDB);
+            return updateMobileData(mobileInDB);
         }else {
             return null;
         }
@@ -194,7 +202,7 @@ public class MobileServiceImpl implements MobileService {
         MobileDTO mobileInDB=findById(id);
         if(mobileInDB!=null){
             mobileInDB.setPrice(mobileDTO.getPrice());
-            return addMobileData(mobileInDB);
+            return updateMobileData(mobileInDB);
         }else {
             return null;
         }
@@ -205,7 +213,7 @@ public class MobileServiceImpl implements MobileService {
         MobileDTO mobileInDB=findById(id);
         if(mobileInDB!=null){
             mobileInDB.setImei(mobileDTO.getImei());
-            return addMobileData(mobileInDB);
+            return updateMobileData(mobileInDB);
         }else {
             return null;
         }
@@ -229,6 +237,20 @@ public class MobileServiceImpl implements MobileService {
     @Override
     public List<MobileDTO> listOfMobileSortedByCompanyNameInDesc() {
         return  mobileDataRepo.findAll(Sort.by(Sort.Direction.DESC, "companyName")).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public MobileDTO deactivateMobile(UUID id) {
+        MobileDTO mobileDTO=findById(id);
+        mobileDTO.setStatus("Deactivated");
+        return updateMobileData(mobileDTO);
+    }
+
+    @Override
+    public MobileDTO activateMobile(UUID id) {
+        MobileDTO mobileDTO=findById(id);
+        mobileDTO.setStatus("active");
+        return updateMobileData(mobileDTO);
     }
 
     @Override

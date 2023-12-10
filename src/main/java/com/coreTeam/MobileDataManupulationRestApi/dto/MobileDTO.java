@@ -1,6 +1,7 @@
 package com.coreTeam.MobileDataManupulationRestApi.dto;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -15,5 +16,6 @@ public class MobileDTO {
     private String imei;
     private LocalDate dateCreated;
     private LocalDate lastUpdate;
+    private String status;
 
 }

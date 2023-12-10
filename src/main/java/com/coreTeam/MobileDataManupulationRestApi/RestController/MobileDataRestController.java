@@ -95,5 +95,15 @@ public class MobileDataRestController{
         return mobileService.listOfMobileSortedByCompanyNameInDesc();
     }
 
+    @GetMapping("/deactivateMobile")
+    public MobileDTO deactivateMobile(@RequestParam("id") UUID id){
+        return mobileService.deactivateMobile(id);
+    }
+
+    @PutMapping("/activateMobile")
+    public MobileDTO activateMobile(@RequestParam("id") UUID id){
+        return mobileService.activateMobile(id);
+    }
+
 
 }
