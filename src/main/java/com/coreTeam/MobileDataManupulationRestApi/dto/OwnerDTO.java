@@ -1,6 +1,8 @@
 package com.coreTeam.MobileDataManupulationRestApi.dto;
 
 import com.coreTeam.MobileDataManupulationRestApi.Model.AddressModel;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Lob;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,6 +16,7 @@ public class OwnerDTO {
     private String name;
     private String dob;
     private AddressModel address;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<MobileDTO> mobileList;
 
 }

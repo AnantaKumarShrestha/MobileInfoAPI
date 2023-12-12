@@ -1,5 +1,6 @@
 package com.coreTeam.MobileDataManupulationRestApi.dto;
 
+import jakarta.persistence.Lob;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,5 +18,8 @@ public class MobileDTO {
     private LocalDate dateCreated;
     private LocalDate lastUpdate;
     private String status;
+
+    @Lob
+    private String image;
 
 }

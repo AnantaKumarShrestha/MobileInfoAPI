@@ -1,15 +1,17 @@
 package com.coreTeam.MobileDataManupulationRestApi.RestController;
 
 import com.coreTeam.MobileDataManupulationRestApi.Service.OwnerService;
+import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 import com.coreTeam.MobileDataManupulationRestApi.dto.OwnerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/ownerApi")
+@RequestMapping("/owner-api")
 public class OwnerRestController {
 
     @Autowired
@@ -25,19 +27,19 @@ public class OwnerRestController {
         return ownerService.getOwnerlist();
     }
 
-    @GetMapping("/owner")
-    public OwnerDTO getOwnerByID(@RequestParam("id") UUID id){
+    @GetMapping("/owners/{ownerId}")
+    public OwnerDTO getOwnerByID(@PathVariable("ownerId") UUID id){
         return ownerService.getOwnerByID(id);
     }
 
-    @PutMapping("/updateOwner")
-    public OwnerDTO updateOwnerData(@RequestBody OwnerDTO owner,@RequestParam("id") UUID id){
-        return ownerService.updateOwnerData(owner,id);
+    @PutMapping("/owners/{ownerId}")
+    public OwnerDTO updateOwner(@RequestBody OwnerDTO owner,@PathVariable("ownerId") UUID id){
+        return ownerService.updateOwner(owner,id);
     }
 
-    @PostMapping("/assigningMobileToUser")
-    public OwnerDTO as(@RequestParam("ownerId") UUID ownerId,@RequestParam("mobileId") UUID mobileId){
-        return ownerService.assigningMobileToOwner(ownerId,mobileId);
+    @PostMapping("/owners/{ownerId}/mobile")
+    public OwnerDTO assignMobileToOwner(@PathVariable("ownerId") UUID ownerId, @RequestBody MobileDTO mobile) throws IOException {
+        return ownerService.assignMobileToOwner(ownerId,mobile);
     }
 
 }

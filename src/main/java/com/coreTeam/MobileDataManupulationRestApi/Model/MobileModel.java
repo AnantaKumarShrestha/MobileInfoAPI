@@ -36,6 +36,9 @@ public class MobileModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate lastUpdate;
 
+    @Lob
+    private String image;
+
 
 
 }

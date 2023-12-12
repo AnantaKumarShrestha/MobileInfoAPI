@@ -6,6 +6,7 @@ import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.Model.OwnerModel;
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
 import com.coreTeam.MobileDataManupulationRestApi.Service.OwnerService;
+import com.coreTeam.MobileDataManupulationRestApi.db.MobileRepo;
 import com.coreTeam.MobileDataManupulationRestApi.db.OwnerRepo;
 import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 import com.coreTeam.MobileDataManupulationRestApi.dto.OwnerDTO;
@@ -13,7 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,10 +35,13 @@ public class OwnerServiceImpl implements OwnerService {
     @Autowired
     private MobileService mobileService;
 
+    @Autowired
+    private MobileRepo mobileRepo;
+
     @Override
     public OwnerDTO addOwner(OwnerDTO ownerDTO) {
-        OwnerModel ownerModel=ownerDtoIntoOwnerModel(ownerDTO);
-        return ownerModelIntoOwnerDto(ownerRepo.save(ownerModel));
+        OwnerModel owner=ownerDtoIntoOwnerModel(ownerDTO);
+        return ownerModelIntoOwnerDto(ownerRepo.save(owner));
     }
 
     @Override
@@ -47,57 +55,45 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public OwnerDTO updateOwnerData(OwnerDTO owner,UUID id) {
+    public OwnerDTO updateOwner(OwnerDTO owner, UUID id) {
         owner.setId(id);
         return ownerModelIntoOwnerDto(ownerDtoIntoOwnerModel(owner));
     }
 
     @Override
-    public OwnerDTO assigningMobileToOwner(UUID ownerId, UUID mobileId) {
-        OwnerDTO owner=getOwnerByID(ownerId);
-        MobileDTO mobile=mobileService.findById(mobileId);
-        mobile.setStatus("Active");
-        mobileService.updateMobileData(mobile);
-        if (owner.getMobileList() == null) {
-            owner.setMobileList(new ArrayList<>());
-        }
-        owner.getMobileList().add(mobile);
-        OwnerModel ownerModel=ownerDtoIntoOwnerModel(owner);
-        return ownerModelIntoOwnerDto(ownerRepo.save(ownerModel));
+    public OwnerDTO assignMobileToOwner(UUID ownerId, MobileDTO mobileDTO) throws IOException {
+
+        //converted mobiledto into mobileModel and saved into databased and valued return is saved into savedMobile variable
+        MobileModel savedMobile=mobileRepo.save(mobileService.mobileDtoIntoMobileModel(mobileDTO));
+        //Owner is fetched from database by using id and saved into owner
+        OwnerModel owner =ownerRepo.findById(ownerId).orElseThrow(()->new OwnerNotFoundException(ownerId));
+        //status is set to active
+        savedMobile.setStatus("Active");
+        savedMobile.setImage("src/main/resources/static/images/mobileimage/"+savedMobile.getId()+savedMobile.getDateCreated()+".png");
+        //===========================
+        byte[] decodedBytes= Base64.getDecoder().decode(mobileDTO.getImage());
+        Files.write(Path.of("src/main/resources/static/images/mobileimage/" + savedMobile.getId()+savedMobile.getDateCreated()+".png"), decodedBytes);
+
+        //=======================
+        //mobile is saved into database after setting status active and photo name
+        mobileRepo.save(savedMobile);
+//        if (owner.getMobileList() == null) {
+//            owner.setMobileList(new ArrayList<>());
+//        }
+        //Mobile is set into owner entity
+        owner.getMobileList().add(savedMobile);
+        //Owner is  saved ito database and the return valued is converted into ownerdto
+        return ownerModelIntoOwnerDto(ownerRepo.save(owner));
     }
 
     @Override
     public OwnerModel ownerDtoIntoOwnerModel(OwnerDTO owner) {
-
-//        OwnerModel ownerModel=new OwnerModel();
-//     //   ownerModel.setId(owner.getId());
-//        ownerModel.setName(owner.getName());
-//        ownerModel.setDob(owner.getDob());
-//        ownerModel.setAddress(owner.getAddress());
-//      //  ownerModel.setMobileList(new ArrayList<>(owner.getMobileList()));
-
-        OwnerModel ownerModel=modelMapper.map(owner,OwnerModel.class);
-
-        return ownerModel;
+        return modelMapper.map(owner,OwnerModel.class);
     }
 
     @Override
     public OwnerDTO ownerModelIntoOwnerDto(OwnerModel owner) {
-
-//        OwnerDTO ownerDTO=new OwnerDTO();
-//        ownerDTO.setId(owner.getId());
-//        ownerDTO.setName(owner.getName());
-//        ownerDTO.setDob(owner.getDob());
-//        ownerDTO.setAddress(owner.getAddress());
-//      //  List<MobileModel> A=owner.getMobileList();
-//
-//        if (owner.getMobileList() != null) {
-//         //   owner.setMobileList(new ArrayList<>());
-//            List<MobileDTO> k = owner.getMobileList().stream().map(s -> mobileService.mobileModelIntoMobileDto(s)).collect(Collectors.toList());
-//            ownerDTO.setMobileList(new ArrayList<>(k));
-//        }
-        OwnerDTO ownerDTO=modelMapper.map(owner,OwnerDTO.class);
-        return ownerDTO;
+        return modelMapper.map(owner,OwnerDTO.class);
     }
 
 

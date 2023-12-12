@@ -9,54 +9,17 @@ import java.util.UUID;
 
 public interface MobileService {
 
-//    List<MobileModel> getAllMobileList();
-//    MobileModel addMobileData(MobileModel mobileModel);
-//
-//    MobileModel findById(int id);
-//    void deleteAllMobileData();
-//
-//    void deleteMobileDataById(int id);
-//
-//    MobileModel updateMobileData(MobileModel mobileModel,int id);
-//
-//    MobileModel updateMobileCompanyName(MobileModel mobileModel,int id);
-//
-//    MobileModel updateMobileModelName(MobileModel mobileModel,int id);
-//
-//    MobileModel updateMobilePrice(MobileModel mobileModel,int id);
-//
-//    MobileModel updateMobileIMEI(MobileModel mobileModel,int id);
-//
-//    List<MobileModel> listOfMobileBetweenTwoDates(LocalDate startDate,LocalDate endDate);
-//
-//    List<MobileModel> listOfMobileCreatedOnSameDate(LocalDate localDate);
-//
-//    List<MobileModel> listOfMobileSortedByCompanyName();
-//
-//    List<MobileModel> listOfMobileSortedByCompanyNameInDesc();
-//
-//    MobileModel mobileDtoIntoMobileModel(MobileDTO mobileDTO);
-//
-//    MobileDTO mobileModelIntoMobileDto(MobileModel mobileModel);
-
-
-
-
-
-
-  //  ================================================================
-
     List<MobileDTO> getAllMobileList();
-    MobileDTO addMobileData(MobileDTO mobileDTO);
+    MobileDTO addMobile(MobileDTO mobileDTO);
 
-    MobileDTO updateMobileData(MobileDTO mobileDTO);
+    MobileDTO updateMobile(MobileDTO mobileDTO);
 
     MobileDTO findById(UUID id);
-    void deleteAllMobileData();
+    void deleteAllMobile();
 
-    void deleteMobileDataById(UUID id);
+    void deleteMobileByID(UUID id);
 
-    MobileDTO updateMobileData(MobileDTO mobileDTO, UUID id);
+    MobileDTO updateMobile(MobileDTO mobileDTO, UUID id);
 
     MobileDTO updateMobileCompanyName(MobileDTO mobileDTO,UUID id);
 
@@ -68,7 +31,7 @@ public interface MobileService {
 
     List<MobileDTO> listOfMobileBetweenTwoDates(LocalDate startDate,LocalDate endDate);
 
-    List<MobileDTO> listOfMobileCreatedOnSameDate(LocalDate localDate);
+    List<MobileDTO> listOfMobileCreatedOnSameDate(LocalDate sameDate);
 
     List<MobileDTO> listOfMobileSortedByCompanyName();
 
@@ -77,6 +40,8 @@ public interface MobileService {
     MobileDTO deactivateMobile(UUID id);
 
     MobileDTO activateMobile(UUID id);
+
+    MobileModel getMobileById(UUID id);
 
     MobileModel mobileDtoIntoMobileModel(MobileDTO mobileDTO);
 
