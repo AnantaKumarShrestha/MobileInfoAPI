@@ -7,6 +7,7 @@ import com.coreTeam.MobileDataManupulationRestApi.dto.OwnerDTO;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface OwnerService {
 
@@ -23,6 +24,12 @@ public interface OwnerService {
     OwnerModel ownerDtoIntoOwnerModel(OwnerDTO owner);
 
     OwnerDTO ownerModelIntoOwnerDto(OwnerModel owner);
+
+    String deleteAllOwner();
+
+    String deleteOwnerById(UUID id);
+
+    String deleteOwnersMobileById(UUID ownerId,UUID mobileId);
 
 
 

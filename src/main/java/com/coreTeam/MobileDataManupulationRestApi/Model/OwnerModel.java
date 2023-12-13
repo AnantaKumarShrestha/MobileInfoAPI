@@ -25,7 +25,7 @@ public class OwnerModel {
     @OneToOne(cascade = CascadeType.ALL)
     private AddressModel address;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MobileModel> mobileList;
 
 

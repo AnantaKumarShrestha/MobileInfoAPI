@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class OwnerServiceImpl implements OwnerService {
@@ -51,7 +51,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public OwnerDTO getOwnerByID(UUID id) {
-        return ownerModelIntoOwnerDto(ownerRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
+        return ownerModelIntoOwnerDto(ownerRepo.findById(id).orElseThrow(()->new OwnerNotFoundException(id)));
     }
 
     @Override
@@ -69,7 +69,7 @@ public class OwnerServiceImpl implements OwnerService {
         OwnerModel owner =ownerRepo.findById(ownerId).orElseThrow(()->new OwnerNotFoundException(ownerId));
         //status is set to active
         savedMobile.setStatus("Active");
-        savedMobile.setImage("src/main/resources/static/images/mobileimage/"+savedMobile.getId()+savedMobile.getDateCreated()+".png");
+        savedMobile.setImage("/owner-api/owener/mobile/productphoto/"+savedMobile.getId()+savedMobile.getDateCreated()+".png");
         //===========================
         byte[] decodedBytes= Base64.getDecoder().decode(mobileDTO.getImage());
         Files.write(Path.of("src/main/resources/static/images/mobileimage/" + savedMobile.getId()+savedMobile.getDateCreated()+".png"), decodedBytes);
@@ -94,6 +94,34 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public OwnerDTO ownerModelIntoOwnerDto(OwnerModel owner) {
         return modelMapper.map(owner,OwnerDTO.class);
+    }
+
+    @Override
+    public String deleteAllOwner() {
+
+         ownerRepo.findAll().stream().forEach(owner->ownerRepo.delete(owner));
+         return "Deleted successfully";
+    }
+
+    @Override
+    public String deleteOwnerById(UUID id) {
+        return ownerRepo.findById(id).map(owner->{ownerRepo.delete(owner);
+           return "Deleted successfully";
+        }).orElseThrow(()->new OwnerNotFoundException(id));
+    }
+
+    @Override
+    public String deleteOwnersMobileById(UUID ownerId, UUID mobileId) {
+        if(!ownerRepo.existsById(ownerId)){
+            throw new OwnerNotFoundException(ownerId);
+        }
+
+//        return mobileRepo.findById(mobileId).map(mobile->{
+//               mobileRepo.delete(mobile);
+//               return "Deleted Successfully";
+//        }).orElseThrow(()->new MobileNotFoundException(mobileId));
+
+      return "asas";
     }
 
 
