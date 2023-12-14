@@ -116,12 +116,12 @@ public class OwnerServiceImpl implements OwnerService {
             throw new OwnerNotFoundException(ownerId);
         }
 
-//        return mobileRepo.findById(mobileId).map(mobile->{
-//               mobileRepo.delete(mobile);
-//               return "Deleted Successfully";
-//        }).orElseThrow(()->new MobileNotFoundException(mobileId));
+        return mobileRepo.findById(mobileId).map(mobile->{
+               mobileRepo.deleteById(mobileId);
+               return "Deleted Successfully";
+        }).orElseThrow(()->new MobileNotFoundException(mobileId));
 
-      return "asas";
+
     }
 
 

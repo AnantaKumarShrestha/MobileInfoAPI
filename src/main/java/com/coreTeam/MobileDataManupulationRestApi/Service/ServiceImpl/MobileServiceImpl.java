@@ -27,7 +27,8 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public List<MobileDTO> getAllMobileList(){
-        return  mobileRepo.findAll().stream().map(mobile->mobileModelIntoMobileDto(mobile)).collect(Collectors.toList());
+     //   return  mobileRepo.findAll().stream().map(mobile->mobileModelIntoMobileDto(mobile)).collect(Collectors.toList());
+        return  mobileRepo.getAllMobile().stream().map(mobile->mobileModelIntoMobileDto(mobile)).collect(Collectors.toList());
     }
 
     @Override
@@ -47,12 +48,14 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public MobileDTO  findById(UUID id){
+       // return mobileModelIntoMobileDto(mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
         return mobileModelIntoMobileDto(mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
     }
 
     @Override
     public void deleteAllMobile() {
         mobileRepo.deleteAll();
+      //  return "Deleted Successfully";
     }
 
     @Override
@@ -119,22 +122,26 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public List<MobileDTO> listOfMobileBetweenTwoDates(LocalDate startDate, LocalDate endDate) {
-        return mobileRepo.findByDateCreatedBetween(startDate,endDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+      //  return mobileRepo.findByDateCreatedBetween(startDate,endDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+        return mobileRepo.getMobileListCratedBetweenTwoDates(startDate,endDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<MobileDTO> listOfMobileCreatedOnSameDate(LocalDate localDate) {
-        return mobileRepo.findByDateCreated(localDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+    public List<MobileDTO> listOfMobileCreatedOnSameDate(LocalDate dateCreated) {
+      //  return mobileRepo.findByDateCreated(localDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+        return mobileRepo.getMobileListCratedOnSameDay(dateCreated).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override
     public List<MobileDTO> listOfMobileSortedByCompanyName() {
-        return  mobileRepo.findAll(Sort.by(Sort.Direction.ASC, "companyName")).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+    //    return  mobileRepo.findAll(Sort.by(Sort.Direction.ASC, "companyName")).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+        return  mobileRepo.getMobileAscOrder().stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override
     public List<MobileDTO> listOfMobileSortedByCompanyNameInDesc() {
-        return  mobileRepo.findAll(Sort.by(Sort.Direction.DESC, "companyName")).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+      //  return  mobileRepo.findAll(Sort.by(Sort.Direction.DESC, "companyName")).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
+        return  mobileRepo.getMobileListDesOrder().stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override

@@ -11,11 +11,15 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.util.UUID;
-
+//get
+@NamedQuery(name = "getAllMobile",query = "SELECT m FROM MobileModel m")
+@NamedQuery(name = "getMobileListCreatedOnSameDay",query = "SELECT m FROM MobileModel m WHERE m.dateCreated= :dateCreated")
+@NamedQuery(name = "getMobileListCreatedBetweenTwoDates",query = "SELECT m FROM MobileModel m WHERE m.dateCreated BETWEEN :startDate AND :endDate")
+@NamedQuery(name = "AscOrderListByCompanyName",query = "SELECT m FROM MobileModel m ORDER BY m.companyName ASC")
+@NamedQuery(name = "DesOrderListByCompanyName",query = "SELECT m FROM MobileModel m ORDER BY m.companyName DESC")
 @Data
 @Entity
 public class MobileModel {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
