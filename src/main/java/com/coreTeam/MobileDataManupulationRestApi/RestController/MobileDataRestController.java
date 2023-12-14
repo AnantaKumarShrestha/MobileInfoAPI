@@ -29,13 +29,13 @@ public class MobileDataRestController{
 
 
     @DeleteMapping("/mobiles")
-    public void deleteAllMobile(){
-        mobileService.deleteAllMobile();
+    public String deleteAllMobile(){
+        return mobileService.deleteAllMobile();
     }
 
     @DeleteMapping("/mobiles/{mobileId}")
-    public void deleteMobileById(@PathVariable("mobileId") UUID id){
-        mobileService.deleteMobileByID(id);
+    public String deleteMobileById(@PathVariable("mobileId") UUID id){
+       return mobileService.deleteMobileByID(id);
     }
 
     @PostMapping("/mobile")

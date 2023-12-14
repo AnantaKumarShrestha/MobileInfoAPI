@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +47,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public List<OwnerDTO> getOwnerlist() {
-        return ownerRepo.findAll().stream().map(owner->ownerModelIntoOwnerDto(owner)).collect(Collectors.toList());
+        return ownerRepo.getAllOwner().stream().map(owner->ownerModelIntoOwnerDto(owner)).collect(Collectors.toList());
     }
 
     @Override
@@ -98,14 +99,30 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public String deleteAllOwner() {
-
-         ownerRepo.findAll().stream().forEach(owner->ownerRepo.delete(owner));
+      //   ownerRepo.findAll().stream().forEach(owner->ownerRepo.delete(owner));
+        ownerRepo.findAll().stream().forEach(owner->deleteOwnerById(owner.getId()));
          return "Deleted successfully";
+    }
+
+    private void deletePhoto(MobileModel mobile){
+        String pathname="src/main/resources/static/images/mobileimage/";
+        String photo=""+mobile.getId()+mobile.getDateCreated()+".png";
+        try {
+            Files.delete(Paths.get(pathname,photo));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String deleteOwnerById(UUID id) {
-        return ownerRepo.findById(id).map(owner->{ownerRepo.delete(owner);
+        return ownerRepo.findById(id).map(owner->{
+            List<MobileModel> mobileList=owner.getMobileList();
+
+            for(MobileModel mobile:mobileList){
+                deletePhoto(mobile);
+            }
+            ownerRepo.delete(owner);
            return "Deleted successfully";
         }).orElseThrow(()->new OwnerNotFoundException(id));
     }
@@ -117,7 +134,8 @@ public class OwnerServiceImpl implements OwnerService {
         }
 
         return mobileRepo.findById(mobileId).map(mobile->{
-               mobileRepo.deleteById(mobileId);
+            deletePhoto(mobile);
+            mobileRepo.deleteById(mobileId);
                return "Deleted Successfully";
         }).orElseThrow(()->new MobileNotFoundException(mobileId));
 

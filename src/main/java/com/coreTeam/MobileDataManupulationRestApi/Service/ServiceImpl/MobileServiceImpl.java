@@ -53,14 +53,15 @@ public class MobileServiceImpl implements MobileService {
     }
 
     @Override
-    public void deleteAllMobile() {
+    public String deleteAllMobile() {
         mobileRepo.deleteAll();
-      //  return "Deleted Successfully";
+        return "Deleted All Mobile Successfully";
     }
 
     @Override
-    public void deleteMobileByID(UUID id) {
+    public String deleteMobileByID(UUID id) {
         mobileRepo.deleteById(id);
+        return "Deleted Successfully";
     }
 
     @Override

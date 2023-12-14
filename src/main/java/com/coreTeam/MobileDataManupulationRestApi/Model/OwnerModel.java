@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 @NamedQuery(name = "getAllOwner",query = "SELECT o FROM OwnerModel o")
-
 @Data
 @Entity
 public class OwnerModel {
