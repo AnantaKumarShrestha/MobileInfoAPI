@@ -94,14 +94,14 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public void deleteOwnerById(UUID id) {
-         ownerRepo.findById(id).map(owner->{
-            List<MobileModel> mobileList=owner.getMobileList();
-            for(MobileModel mobile:mobileList){
-                FileUtils.deletePhoto(mobile);
-            }
-            ownerRepo.delete(owner);
-           return "Deleted successfully";
-        }).orElseThrow(()->new OwnerNotFoundException(id));
+
+        OwnerModel owner=ownerRepo.findById(id).orElseThrow(()->new OwnerNotFoundException(id));
+        List<MobileModel> mobileList=owner.getMobileList();
+        for(MobileModel mobile:mobileList){
+            FileUtils.deletePhoto(mobile);
+        }
+        ownerRepo.delete(owner);
+
     }
 
     @Override
@@ -109,6 +109,7 @@ public class OwnerServiceImpl implements OwnerService {
         if(!ownerRepo.existsById(ownerId)){
             throw new OwnerNotFoundException(ownerId);
         }
+        // ownerRepo.findById(ownerId).orElseThrow(()->new OwnerNotFoundException(ownerId));
          mobileRepo.findById(mobileId).map(mobile->{
             FileUtils.deletePhoto(mobile);
             mobileRepo.deleteById(mobileId);

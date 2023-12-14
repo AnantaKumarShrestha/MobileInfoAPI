@@ -18,7 +18,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler({MobileNotFoundException.class,OwnerNotFoundException.class})
-    public ResponseEntity<ErrorModel> handleMethodArgumentNotValid(MobileNotFoundException e){
+    public ResponseEntity<ErrorModel> handleMethodArgumentNotValid(RuntimeException e){
       String message=e.getMessage();
       String https=Integer.toString(HttpStatus.NOT_FOUND.value());
       ErrorModel errorModel=new ErrorModel(message,https);

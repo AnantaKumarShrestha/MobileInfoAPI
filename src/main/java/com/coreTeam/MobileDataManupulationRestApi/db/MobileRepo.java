@@ -29,5 +29,6 @@ public interface MobileRepo extends JpaRepository<MobileModel, UUID> {
     @Query(name = "DesOrderListByCompanyName")
     List<MobileModel> getMobileListDesOrder();
 
-
+    @Query(name = "findById")
+    MobileModel getMobileById(@Param("id") UUID id);
 }

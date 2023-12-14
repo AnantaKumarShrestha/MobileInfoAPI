@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public MobileDTO  findById(UUID id){
-        return mobileModelIntoMobileDto(mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
+        return mobileModelIntoMobileDto(Optional.ofNullable(mobileRepo.getMobileById(id)).orElseThrow(()->new MobileNotFoundException(id)));
     }
 
 
@@ -66,11 +67,9 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public void deleteMobileByID(UUID id) {
-        mobileRepo.findById(id).map(mobile->{
+            MobileModel mobile =mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id));
             FileUtils.deletePhoto(mobile);
             mobileRepo.deleteById(id);
-            return null;
-        });
     }
 
     @Override
