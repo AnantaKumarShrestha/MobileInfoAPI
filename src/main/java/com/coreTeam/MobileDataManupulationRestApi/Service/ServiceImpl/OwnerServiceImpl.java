@@ -130,5 +130,14 @@ public class OwnerServiceImpl implements OwnerService {
 
     }
 
+    @Override
+    public OwnerDTO assignMadeMobileToOwner(UUID ownerId, UUID mobileId) {
+        OwnerModel owner=ownerRepo.findById(ownerId).orElseThrow(()->new OwnerNotFoundException(ownerId));
+        MobileModel mobile=mobileRepo.findById(mobileId).orElseThrow(()->new MobileNotFoundException(mobileId));
+        mobile.setStatus("active");
+        owner.getMobileList().add(mobile);
+        return ownerModelIntoOwnerDto( ownerRepo.save(owner));
+    }
+
 
 }

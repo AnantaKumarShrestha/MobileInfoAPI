@@ -3,6 +3,7 @@ package com.coreTeam.MobileDataManupulationRestApi.Service;
 import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public interface MobileService {
 
     List<MobileDTO> getAllMobileList();
-    MobileDTO addMobile(MobileDTO mobileDTO);
+    MobileDTO addMobile(MobileDTO mobileDTO) throws IOException;
 
     MobileDTO updateMobile(MobileDTO mobileDTO);
 

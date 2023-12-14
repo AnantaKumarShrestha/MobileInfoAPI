@@ -5,6 +5,8 @@ import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +41,7 @@ public class MobileDataRestController{
     }
 
     @PostMapping("/mobile")
-    public MobileDTO addMobile(@RequestBody MobileDTO mobileDTO){
+    public MobileDTO addMobile(@RequestBody MobileDTO mobileDTO) throws IOException {
         return mobileService.addMobile(mobileDTO);
     }
 

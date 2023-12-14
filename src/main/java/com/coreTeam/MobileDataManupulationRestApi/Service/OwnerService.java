@@ -31,6 +31,8 @@ public interface OwnerService {
 
     String deleteOwnersMobileById(UUID ownerId,UUID mobileId);
 
+    OwnerDTO assignMadeMobileToOwner(UUID ownerId,UUID mobileId);
+
 
 
 }

@@ -66,6 +66,11 @@ public class OwnerRestController {
         return ownerService.deleteOwnerById(id);
     }
 
+    @GetMapping("/owner/{ownerId}/mobile/{mobileId}")
+    public OwnerDTO assignMobileToOwner(@PathVariable("ownerId") UUID ownerId,@PathVariable("mobileId") UUID mobileId){
+      return ownerService.assignMadeMobileToOwner(ownerId,mobileId);
+    }
+
     @GetMapping("/owener/mobile/productphoto/{imagename}")
     public ResponseEntity<?> getphoto(@PathVariable("imagename") String imageName) throws IOException {
         Path path = Path.of("src/main/resources/static/images/mobileimage/" + imageName);
