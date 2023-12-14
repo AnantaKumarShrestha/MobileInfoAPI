@@ -3,6 +3,7 @@ package com.coreTeam.MobileDataManupulationRestApi.RestController;
 import com.coreTeam.MobileDataManupulationRestApi.Service.OwnerService;
 import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 import com.coreTeam.MobileDataManupulationRestApi.dto.OwnerDTO;
+import com.coreTeam.MobileDataManupulationRestApi.playLoad.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,49 +27,56 @@ public class OwnerRestController {
 
 
     @PostMapping("/owner")
-    public OwnerDTO addOwner(@RequestBody OwnerDTO ownerDTO){
-        return ownerService.addOwner(ownerDTO);
+    public ResponseEntity<OwnerDTO> addOwner(@RequestBody OwnerDTO ownerDTO){
+         OwnerDTO owner=ownerService.addOwner(ownerDTO);
+        return new ResponseEntity<>(owner,HttpStatus.CREATED);
     }
 
     @GetMapping("/owners")
-    public List<OwnerDTO> getOwnerList(){
-        return ownerService.getOwnerlist();
+    public ResponseEntity<List<OwnerDTO>> getOwnerList(){
+        List<OwnerDTO> ownerList=ownerService.getOwnerlist();
+        return new ResponseEntity<>(ownerList,HttpStatus.OK);
     }
 
     @GetMapping("/owners/{ownerId}")
-    public OwnerDTO getOwnerByID(@PathVariable("ownerId") UUID id){
-        return ownerService.getOwnerByID(id);
+    public ResponseEntity<OwnerDTO> getOwnerByID(@PathVariable("ownerId") UUID id){
+        OwnerDTO owner= ownerService.getOwnerByID(id);
+        return new ResponseEntity<>(owner,HttpStatus.OK);
     }
 
     @PutMapping("/owners/{ownerId}")
-    public OwnerDTO updateOwner(@RequestBody OwnerDTO owner,@PathVariable("ownerId") UUID id){
-        return ownerService.updateOwner(owner,id);
+    public OwnerDTO updateOwner(@RequestBody OwnerDTO ownerDTO,@PathVariable("ownerId") UUID id){
+        return ownerService.updateOwner(ownerDTO,id);
     }
 
     @PostMapping("/owners/{ownerId}/mobile")
-    public OwnerDTO assignMobileToOwner(@PathVariable("ownerId") UUID ownerId, @RequestBody MobileDTO mobile) throws IOException {
-        return ownerService.assignMobileToOwner(ownerId,mobile);
+    public ResponseEntity<OwnerDTO> assignMobileToOwner(@PathVariable("ownerId") UUID ownerId, @RequestBody MobileDTO mobile) throws IOException {
+        OwnerDTO owner=ownerService.assignMobileToOwner(ownerId,mobile);
+        return new ResponseEntity<>(owner,HttpStatus.OK);
     }
 
-
     @DeleteMapping("/owners")
-    public String deleteAllOwner(){
-        return ownerService.deleteAllOwner();
+    public ApiResponse deleteAllOwner(){
+        ownerService.deleteAllOwner();
+        return new ApiResponse("Deleted All Owner successfully","Success");
     }
 
     @DeleteMapping("/owners/{ownerId}/mobiles/{mobileId}")
-    public String deleteOwnersMobileById(@PathVariable("ownerId") UUID ownerId,@PathVariable("mobileId") UUID mobileId){
-       return ownerService.deleteOwnersMobileById(ownerId,mobileId);
+    public ApiResponse deleteOwnersMobileById(@PathVariable("ownerId") UUID ownerId,@PathVariable("mobileId") UUID mobileId){
+       ownerService.deleteOwnersMobileById(ownerId,mobileId);
+       return new ApiResponse("Deleted mobile successfully","Success");
     }
 
     @DeleteMapping("/owners/{ownerId}")
-    public String deleteOwnerById(@PathVariable("ownerId") UUID id){
-        return ownerService.deleteOwnerById(id);
+    public ApiResponse deleteOwnerById(@PathVariable("ownerId") UUID id){
+         ownerService.deleteOwnerById(id);
+         return new ApiResponse("Deleted mobile successfully id : "+id,"Success");
     }
 
     @GetMapping("/owner/{ownerId}/mobile/{mobileId}")
-    public OwnerDTO assignMobileToOwner(@PathVariable("ownerId") UUID ownerId,@PathVariable("mobileId") UUID mobileId){
-      return ownerService.assignMadeMobileToOwner(ownerId,mobileId);
+    public ResponseEntity<OwnerDTO> assignMobileToOwner(@PathVariable("ownerId") UUID ownerId,@PathVariable("mobileId") UUID mobileId){
+       OwnerDTO owner=ownerService.assignMadeMobileToOwner(ownerId,mobileId);
+       return new ResponseEntity<>(owner,HttpStatus.OK);
     }
 
     @GetMapping("/owener/mobile/productphoto/{imagename}")

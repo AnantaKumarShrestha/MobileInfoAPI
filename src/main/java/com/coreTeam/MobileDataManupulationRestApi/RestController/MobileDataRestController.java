@@ -2,8 +2,11 @@ package com.coreTeam.MobileDataManupulationRestApi.RestController;
 
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
 import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
+import com.coreTeam.MobileDataManupulationRestApi.playLoad.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -31,18 +34,21 @@ public class MobileDataRestController{
 
 
     @DeleteMapping("/mobiles")
-    public String deleteAllMobile(){
-        return mobileService.deleteAllMobile();
+    public ApiResponse deleteAllMobile(){
+         mobileService.deleteAllMobile();
+         return new ApiResponse("Deleted All Mobile Successfully","Success");
     }
 
     @DeleteMapping("/mobiles/{mobileId}")
-    public String deleteMobileById(@PathVariable("mobileId") UUID id){
-       return mobileService.deleteMobileByID(id);
+    public ApiResponse deleteMobileById(@PathVariable("mobileId") UUID id){
+        mobileService.deleteMobileByID(id);
+        return new ApiResponse("Deleted Mobile Successfully.","Success");
     }
 
     @PostMapping("/mobile")
-    public MobileDTO addMobile(@RequestBody MobileDTO mobileDTO) throws IOException {
-        return mobileService.addMobile(mobileDTO);
+    public ResponseEntity<MobileDTO> addMobile(@RequestBody MobileDTO mobileDTO) throws IOException {
+        MobileDTO mobile=mobileService.addMobile(mobileDTO);
+        return new ResponseEntity<>(mobile, HttpStatus.CREATED);
     }
 
 
