@@ -11,19 +11,19 @@ import java.util.stream.Stream;
 
 public interface OwnerService {
 
-    OwnerDTO addOwner(OwnerDTO owner);
+    OwnerDTO addOwner(OwnerDTO ownerDTO);
 
     List<OwnerDTO> getOwnerlist();
 
     OwnerDTO getOwnerByID(UUID id);
 
-    OwnerDTO updateOwner(OwnerDTO owner, UUID id);
+    OwnerDTO updateOwner(OwnerDTO ownerDTO, UUID id);
 
     OwnerDTO assignMobileToOwner(UUID ownerId, MobileDTO ownerDTO) throws IOException;
 
-    OwnerModel ownerDtoIntoOwnerModel(OwnerDTO owner);
+    OwnerModel ownerDtoIntoOwnerModel(OwnerDTO ownerDTO);
 
-    OwnerDTO ownerModelIntoOwnerDto(OwnerModel owner);
+    OwnerDTO ownerModelIntoOwnerDto(OwnerModel ownerModel);
 
     String deleteAllOwner();
 

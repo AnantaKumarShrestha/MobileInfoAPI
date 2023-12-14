@@ -64,27 +64,16 @@ public class OwnerServiceImpl implements OwnerService {
     @Override
     public OwnerDTO assignMobileToOwner(UUID ownerId, MobileDTO mobileDTO) throws IOException {
 
-        //converted mobiledto into mobileModel and saved into databased and valued return is saved into savedMobile variable
         MobileModel savedMobile=mobileRepo.save(mobileService.mobileDtoIntoMobileModel(mobileDTO));
-        //Owner is fetched from database by using id and saved into owner
         OwnerModel owner =ownerRepo.findById(ownerId).orElseThrow(()->new OwnerNotFoundException(ownerId));
-        //status is set to active
         savedMobile.setStatus("Active");
         savedMobile.setImage("/owner-api/owener/mobile/productphoto/"+savedMobile.getId()+savedMobile.getDateCreated()+".png");
-        //===========================
         byte[] decodedBytes= Base64.getDecoder().decode(mobileDTO.getImage());
         Files.write(Path.of("src/main/resources/static/images/mobileimage/" + savedMobile.getId()+savedMobile.getDateCreated()+".png"), decodedBytes);
-
-        //=======================
-        //mobile is saved into database after setting status active and photo name
         mobileRepo.save(savedMobile);
-//        if (owner.getMobileList() == null) {
-//            owner.setMobileList(new ArrayList<>());
-//        }
-        //Mobile is set into owner entity
         owner.getMobileList().add(savedMobile);
-        //Owner is  saved ito database and the return valued is converted into ownerdto
         return ownerModelIntoOwnerDto(ownerRepo.save(owner));
+
     }
 
     @Override
@@ -99,7 +88,6 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public String deleteAllOwner() {
-      //   ownerRepo.findAll().stream().forEach(owner->ownerRepo.delete(owner));
         ownerRepo.findAll().stream().forEach(owner->deleteOwnerById(owner.getId()));
          return "Deleted successfully";
     }

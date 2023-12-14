@@ -14,9 +14,6 @@ import java.util.UUID;
 @Repository
 public interface MobileRepo extends JpaRepository<MobileModel, UUID> {
 
-    List<MobileModel> findByDateCreatedBetween(LocalDate startDate,LocalDate endDate);
-    List<MobileModel> findByDateCreated(LocalDate createdDate);
-
     @Query(name = "getAllMobile")
     List<MobileModel> getAllMobile();
 

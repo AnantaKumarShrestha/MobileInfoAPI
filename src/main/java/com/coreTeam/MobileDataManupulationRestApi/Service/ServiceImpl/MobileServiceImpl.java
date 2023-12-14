@@ -27,7 +27,6 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public List<MobileDTO> getAllMobileList(){
-     //   return  mobileRepo.findAll().stream().map(mobile->mobileModelIntoMobileDto(mobile)).collect(Collectors.toList());
         return  mobileRepo.getAllMobile().stream().map(mobile->mobileModelIntoMobileDto(mobile)).collect(Collectors.toList());
     }
 
@@ -48,7 +47,6 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public MobileDTO  findById(UUID id){
-       // return mobileModelIntoMobileDto(mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
         return mobileModelIntoMobileDto(mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
     }
 
@@ -66,90 +64,70 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public MobileDTO updateMobile(MobileDTO mobileDTO, UUID id){
-        if(findById(id)!=null){
+            findById(id);
             mobileDTO.setId(id);
             return updateMobile(mobileDTO);
-        }else {
-            return null;
-        }
+
     }
 
     @Override
     public MobileDTO updateMobileCompanyName(MobileDTO mobileDTO, UUID id){
-        MobileModel mobileInDB=getMobileById(id);
-        if(mobileInDB!=null){
+
+            MobileModel mobileInDB=getMobileById(id);
             mobileInDB.setCompanyName(mobileDTO.getCompanyName());
             return mobileModelIntoMobileDto(mobileRepo.save(mobileInDB));
-        }else {
-            return null;
-        }
+
     }
 
     @Override
     public MobileDTO updateMobileModelName(MobileDTO mobileDTO, UUID id){
-        MobileModel mobileInDB=getMobileById(id);
-        if(mobileInDB!=null){
+
+            MobileModel mobileInDB=getMobileById(id);
             mobileInDB.setModelName(mobileDTO.getModelName());
             return mobileModelIntoMobileDto(mobileRepo.save(mobileInDB));
-        }else {
-            return null;
-        }
+
     }
 
     @Override
     public MobileDTO updateMobilePrice(MobileDTO mobileDTO, UUID id){
 
-        MobileModel mobileInDB=getMobileById(id);
-        if(mobileInDB!=null){
+            MobileModel mobileInDB=getMobileById(id);
             mobileInDB.setPrice(mobileDTO.getPrice());
             return mobileModelIntoMobileDto(mobileRepo.save(mobileInDB));
-        }else {
-            return null;
-        }
+
     }
 
     @Override
     public MobileDTO updateMobileIMEI(MobileDTO mobileDTO, UUID id){
 
-        MobileModel mobileInDB=getMobileById(id);
-        if(mobileInDB!=null){
+            MobileModel mobileInDB=getMobileById(id);
             mobileInDB.setImei(mobileDTO.getImei());
             return mobileModelIntoMobileDto(mobileRepo.save(mobileInDB));
-        }else {
-            return null;
-        }
 
     }
 
     @Override
     public List<MobileDTO> listOfMobileBetweenTwoDates(LocalDate startDate, LocalDate endDate) {
-      //  return mobileRepo.findByDateCreatedBetween(startDate,endDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
         return mobileRepo.getMobileListCratedBetweenTwoDates(startDate,endDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override
     public List<MobileDTO> listOfMobileCreatedOnSameDate(LocalDate dateCreated) {
-      //  return mobileRepo.findByDateCreated(localDate).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
         return mobileRepo.getMobileListCratedOnSameDay(dateCreated).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override
     public List<MobileDTO> listOfMobileSortedByCompanyName() {
-    //    return  mobileRepo.findAll(Sort.by(Sort.Direction.ASC, "companyName")).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
         return  mobileRepo.getMobileAscOrder().stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override
     public List<MobileDTO> listOfMobileSortedByCompanyNameInDesc() {
-      //  return  mobileRepo.findAll(Sort.by(Sort.Direction.DESC, "companyName")).stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
         return  mobileRepo.getMobileListDesOrder().stream().map(this::mobileModelIntoMobileDto).collect(Collectors.toList());
     }
 
     @Override
     public MobileDTO deactivateMobile(UUID id) {
-//        MobileDTO mobileDTO=findById(id);
-//        mobileDTO.setStatus("Deactivated");
-//        return updateMobileData(mobileDTO);
         MobileModel mobile=getMobileById(id);
         mobile.setStatus("Deactivated");
         return mobileModelIntoMobileDto(mobileRepo.save(mobile));
@@ -157,9 +135,6 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public MobileDTO activateMobile(UUID id) {
- //       MobileDTO mobileDTO=findById(id);
-//        mobileDTO.setStatus("active");
-//        return updateMobileData(mobileDTO);
         MobileModel mobile=getMobileById(id);
         mobile.setStatus("active");
         return mobileModelIntoMobileDto(mobileRepo.save(mobile));
