@@ -16,9 +16,9 @@ public interface MobileService {
     MobileDTO updateMobile(MobileDTO mobileDTO);
 
     MobileDTO findById(UUID id);
-    String deleteAllMobile();
+    void deleteAllMobile();
 
-    String deleteMobileByID(UUID id);
+    void deleteMobileByID(UUID id);
 
     MobileDTO updateMobile(MobileDTO mobileDTO, UUID id);
 

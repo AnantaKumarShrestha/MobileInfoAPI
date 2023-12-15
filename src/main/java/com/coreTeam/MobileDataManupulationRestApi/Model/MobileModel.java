@@ -17,6 +17,7 @@ import java.util.UUID;
 @NamedQuery(name = "getMobileListCreatedBetweenTwoDates",query = "SELECT m FROM MobileModel m WHERE m.dateCreated BETWEEN :startDate AND :endDate")
 @NamedQuery(name = "AscOrderListByCompanyName",query = "SELECT m FROM MobileModel m ORDER BY m.companyName ASC")
 @NamedQuery(name = "DesOrderListByCompanyName",query = "SELECT m FROM MobileModel m ORDER BY m.companyName DESC")
+@NamedQuery(name = "findById",query = "SELECT o FROM MobileModel o WHERE o.id = :id")
 @Data
 @Entity
 public class MobileModel {

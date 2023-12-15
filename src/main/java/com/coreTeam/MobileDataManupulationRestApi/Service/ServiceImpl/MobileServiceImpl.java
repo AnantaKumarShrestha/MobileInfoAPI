@@ -5,6 +5,7 @@ import com.coreTeam.MobileDataManupulationRestApi.Model.MobileModel;
 import com.coreTeam.MobileDataManupulationRestApi.Service.MobileService;
 import com.coreTeam.MobileDataManupulationRestApi.db.MobileRepo;
 import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
+import com.coreTeam.MobileDataManupulationRestApi.utils.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,9 +42,7 @@ public class MobileServiceImpl implements MobileService {
         MobileModel mobile=mobileDtoIntoMobileModel(mobileDTO);
         mobile.setStatus("InActive");
         MobileModel savedMobile= mobileRepo.save(mobile);
-        savedMobile.setImage("/owner-api/owener/mobile/productphoto/"+savedMobile.getId()+savedMobile.getDateCreated()+".png");
-        byte[] decodedBytes= Base64.getDecoder().decode(mobileDTO.getImage());
-        Files.write(Path.of("src/main/resources/static/images/mobileimage/" + savedMobile.getId()+savedMobile.getDateCreated()+".png"), decodedBytes);
+        FileUtils.uploadFile(savedMobile,mobileDTO.getImage());
         return mobileModelIntoMobileDto(mobileRepo.save(savedMobile));
     }
 
@@ -55,34 +55,21 @@ public class MobileServiceImpl implements MobileService {
 
     @Override
     public MobileDTO  findById(UUID id){
-        return mobileModelIntoMobileDto(mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id)));
+        return mobileModelIntoMobileDto(Optional.ofNullable(mobileRepo.getMobileById(id)).orElseThrow(()->new MobileNotFoundException(id)));
     }
 
-    private void deletePhoto(MobileModel mobile){
-        String pathname="src/main/resources/static/images/mobileimage/";
-        String photo=""+mobile.getId()+mobile.getDateCreated()+".png";
-        try {
-            Files.delete(Paths.get(pathname,photo));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
-    public String deleteAllMobile() {
-        mobileRepo.findAll().stream().forEach(mobile->deletePhoto(mobile));
+    public void deleteAllMobile() {
+        mobileRepo.findAll().stream().forEach(mobile-> FileUtils.deletePhoto(mobile));
         mobileRepo.deleteAll();
-        return "Deleted All Mobile Successfully";
     }
 
     @Override
-    public String deleteMobileByID(UUID id) {
-       return mobileRepo.findById(id).map(mobile->{
-            deletePhoto(mobile);
+    public void deleteMobileByID(UUID id) {
+            MobileModel mobile =mobileRepo.findById(id).orElseThrow(()->new MobileNotFoundException(id));
+            FileUtils.deletePhoto(mobile);
             mobileRepo.deleteById(id);
-            return "Deleted Successfully";
-        }).orElseThrow(()->new MobileNotFoundException(id));
-
     }
 
     @Override

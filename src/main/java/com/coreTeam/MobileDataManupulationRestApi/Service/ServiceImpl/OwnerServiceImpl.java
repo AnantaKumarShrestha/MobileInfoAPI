@@ -10,6 +10,7 @@ import com.coreTeam.MobileDataManupulationRestApi.db.MobileRepo;
 import com.coreTeam.MobileDataManupulationRestApi.db.OwnerRepo;
 import com.coreTeam.MobileDataManupulationRestApi.dto.MobileDTO;
 import com.coreTeam.MobileDataManupulationRestApi.dto.OwnerDTO;
+import com.coreTeam.MobileDataManupulationRestApi.utils.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,9 +68,7 @@ public class OwnerServiceImpl implements OwnerService {
         MobileModel savedMobile=mobileRepo.save(mobileService.mobileDtoIntoMobileModel(mobileDTO));
         OwnerModel owner =ownerRepo.findById(ownerId).orElseThrow(()->new OwnerNotFoundException(ownerId));
         savedMobile.setStatus("Active");
-        savedMobile.setImage("/owner-api/owener/mobile/productphoto/"+savedMobile.getId()+savedMobile.getDateCreated()+".png");
-        byte[] decodedBytes= Base64.getDecoder().decode(mobileDTO.getImage());
-        Files.write(Path.of("src/main/resources/static/images/mobileimage/" + savedMobile.getId()+savedMobile.getDateCreated()+".png"), decodedBytes);
+        FileUtils.uploadFile(savedMobile, mobileDTO.getImage());
         mobileRepo.save(savedMobile);
         owner.getMobileList().add(savedMobile);
         return ownerModelIntoOwnerDto(ownerRepo.save(owner));
@@ -87,42 +86,32 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public String deleteAllOwner() {
+    public void deleteAllOwner() {
         ownerRepo.findAll().stream().forEach(owner->deleteOwnerById(owner.getId()));
-         return "Deleted successfully";
     }
 
-    private void deletePhoto(MobileModel mobile){
-        String pathname="src/main/resources/static/images/mobileimage/";
-        String photo=""+mobile.getId()+mobile.getDateCreated()+".png";
-        try {
-            Files.delete(Paths.get(pathname,photo));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+
+    @Override
+    public void deleteOwnerById(UUID id) {
+
+        OwnerModel owner=ownerRepo.findById(id).orElseThrow(()->new OwnerNotFoundException(id));
+        List<MobileModel> mobileList=owner.getMobileList();
+        for(MobileModel mobile:mobileList){
+            FileUtils.deletePhoto(mobile);
         }
+        ownerRepo.delete(owner);
+
     }
 
     @Override
-    public String deleteOwnerById(UUID id) {
-        return ownerRepo.findById(id).map(owner->{
-            List<MobileModel> mobileList=owner.getMobileList();
-
-            for(MobileModel mobile:mobileList){
-                deletePhoto(mobile);
-            }
-            ownerRepo.delete(owner);
-           return "Deleted successfully";
-        }).orElseThrow(()->new OwnerNotFoundException(id));
-    }
-
-    @Override
-    public String deleteOwnersMobileById(UUID ownerId, UUID mobileId) {
+    public void deleteOwnersMobileById(UUID ownerId, UUID mobileId) {
         if(!ownerRepo.existsById(ownerId)){
             throw new OwnerNotFoundException(ownerId);
         }
-
-        return mobileRepo.findById(mobileId).map(mobile->{
-            deletePhoto(mobile);
+        // ownerRepo.findById(ownerId).orElseThrow(()->new OwnerNotFoundException(ownerId));
+         mobileRepo.findById(mobileId).map(mobile->{
+            FileUtils.deletePhoto(mobile);
             mobileRepo.deleteById(mobileId);
                return "Deleted Successfully";
         }).orElseThrow(()->new MobileNotFoundException(mobileId));

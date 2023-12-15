@@ -25,11 +25,11 @@ public interface OwnerService {
 
     OwnerDTO ownerModelIntoOwnerDto(OwnerModel ownerModel);
 
-    String deleteAllOwner();
+    void deleteAllOwner();
 
-    String deleteOwnerById(UUID id);
+    void deleteOwnerById(UUID id);
 
-    String deleteOwnersMobileById(UUID ownerId,UUID mobileId);
+    void deleteOwnersMobileById(UUID ownerId,UUID mobileId);
 
     OwnerDTO assignMadeMobileToOwner(UUID ownerId,UUID mobileId);
 
